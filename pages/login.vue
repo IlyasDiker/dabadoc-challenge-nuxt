@@ -15,15 +15,15 @@
                         </p>
                     </div>
                 </div>
-                <form action="#" class="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2">
+                <form @submit.prevent="onSubmit" class="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2">
                     <div class="col-span-full input-wrapper">
                         <label for="email">Email address</label>
-                        <input id="email"
+                        <input id="email" v-model="FormData.email"
                             type="email" name="email" autocomplete="email" required>
                     </div>
                     <div class="col-span-full input-wrapper">
                         <label for="password">Password</label>
-                        <input id="password"
+                        <input id="password" v-model="FormData.password"
                             type="password" name="password" autocomplete="new-password" required >
                     </div>
                     <div class="col-span-full">
@@ -36,14 +36,31 @@
             </div>
         </div>
         <div class="hidden sm:contents lg:relative lg:block lg:flex-1"><img alt=""
-                src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" width="1664" height="1866" decoding="async"
-                data-nimg="1" class="absolute inset-0 h-full w-full object-cover" loading="lazy"
-                style="color: transparent;"></div>
+            src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" width="1664" height="1866" decoding="async"
+            data-nimg="1" class="absolute inset-0 h-full w-full object-cover" loading="lazy"
+            style="color: transparent;"></div>
     </div>
 </template>
 
 <script>
+import loginrUser from '~~/composables/loginUser'
 export default {
+    methods: {
+        onSubmit(){
+            loginrUser(this.FormData.username, this.FormData.email, this.FormData.password).then((data)=>{
+                console.log(data);
+            })
+        }
+    },
+    data () {
+        return {
+            FormData:{
+                username: '',
+                email: '',
+                password: '',
+            }
+        }
+    },
     setup(){
         definePageMeta({
             layout: "auth",

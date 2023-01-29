@@ -1,7 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 import bcrypt from 'bcrypt'; 
 import { ISession } from "~~/types/ISession";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"; 
 
 const prisma = new PrismaClient();
 

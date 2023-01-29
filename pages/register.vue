@@ -13,28 +13,23 @@
                             account.</p>
                     </div>
                 </div>
-                <form action="#" class="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2">
-                    <div class="">
+                <form @submit.prevent="onSubmit" class="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2">
+                    <div class="col-span-full">
                         <label for="first_name" class="mb-3 block text-sm font-medium text-gray-700">
-                            First name
+                            Username
                         </label>
                         <input id="first_name" type="text" name="first_name" autocomplete="given-name"
-                            required=""
-                            class="block w-full appearance-none rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm">
-                    </div>
-                    <div class=""><label for="last_name" class="mb-3 block text-sm font-medium text-gray-700">Last
-                            name</label><input id="last_name" type="text" name="last_name" autocomplete="family-name"
-                            required=""
+                            required v-model="FormData.username"
                             class="block w-full appearance-none rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm">
                     </div>
                     <div class="col-span-full"><label for="email"
                             class="mb-3 block text-sm font-medium text-gray-700">Email address</label><input id="email"
-                            type="email" name="email" autocomplete="email" required=""
+                            type="email" name="email" autocomplete="email" required v-model="FormData.email"
                             class="block w-full appearance-none rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm">
                     </div>
                     <div class="col-span-full"><label for="password"
                             class="mb-3 block text-sm font-medium text-gray-700">Password</label><input id="password"
-                            type="password" name="password" autocomplete="new-password" required=""
+                            type="password" name="password" autocomplete="new-password" required v-model="FormData.password"
                             class="block w-full appearance-none rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm">
                     </div>
                     <div class="col-span-full"><button
@@ -51,7 +46,25 @@
 </template>
 
 <script>
+import registerUser from '~~/composables/registerUser';
+
 export default {
+    methods: {
+        onSubmit(){
+            registerUser(this.FormData.username, this.FormData.email, this.FormData.password).then((data)=>{
+                console.log(data);
+            })
+        }
+    },
+    data () {
+        return {
+            FormData:{
+                username: '',
+                email: '',
+                password: '',
+            }
+        }
+    },
     setup(){
         definePageMeta({
             layout: "auth",
