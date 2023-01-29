@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@pinia-plugin-persistedstate/nuxt": "^1.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.1",
     "autoprefixer": "^10.4.13",
