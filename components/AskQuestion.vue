@@ -2,13 +2,18 @@
     <section class="p-4 border rounded-lg shadow-md">
         <form @submit.prevent="onSubmit">
             <div class="grid grid-cols-4 gap-x-4 gap-y-3">
-                <div class="col-span-3 input-wrapper">
+                <div class="col-span-2 input-wrapper">
                     <label for="title">Title</label>
                     <input id="title" type="text" name="title" v-model="FormData.title" required>
                 </div>
-                <div class="col-span-1 input-wrapper">
+                <div class="col-span-2 input-wrapper">
                     <label for="location">Location</label>
-                    <input id="location" type="text" name="location" v-model="FormData.location" required>
+                    <div class="relative">
+                        <input id="location" type="text" name="location" v-model="FormData.location" required>
+                        <button class="gpsIcon" type="button" @click.stop="loadGps">
+                            <IconGpsFixed/>
+                        </button>
+                    </div>
                 </div>
                 <div class="col-span-full input-wrapper">
                     <label for="content">Content</label>
@@ -27,6 +32,14 @@
 import createQuestion from '~~/composables/questions/createQuestion'
 export default{
   methods: {
+    loadGps(){
+        if(this.gpsState == 'disabled') return
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition((pos)=>{
+                this.FormData.location = `${pos.coords.longitude}, ${pos.coords.latitude}`
+            })
+        }
+    },
     onSubmit(){
         createQuestion(this.FormData.title, this.FormData.location, this.FormData.content).then((data) => {
             console.log(data);
@@ -36,6 +49,7 @@ export default{
   },
   data () {
     return {
+        gpsState: 'notfixed',
         FormData:{
             title: '',
             location: '',
@@ -46,3 +60,9 @@ export default{
 
 }
 </script>
+
+<style lang="scss" scoped>
+.gpsIcon{
+    @apply absolute top-[50%] right-1 -translate-y-[50%] p-1 hover:bg-gray-200 rounded-full;
+}
+</style>

@@ -8,4 +8,8 @@
 import { useAccountStore } from './stores/account';
 
 const accountStore = useAccountStore()
+
+useHead({
+  title:"DabaQuestions"
+})
 </script>
