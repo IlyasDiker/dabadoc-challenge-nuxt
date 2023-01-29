@@ -4,10 +4,21 @@
             <div class="flex flex-row justify-between items-center">
                 <NuxtLink to="/"><IconApp class="text-white"/></NuxtLink>
                 <div class="flex flex-row items-center gap-5">
-                    <nuxt-link to="login">Login</nuxt-link>
-                    <nuxt-link to="register">Register</nuxt-link>
+                    <template  v-if="!accountStore.isAuthenticated()">
+                        <nuxt-link to="login">Login</nuxt-link>
+                        <nuxt-link to="register">Register</nuxt-link>
+                    </template>
+                    <template v-else>
+                        <a @click="accountStore.logout()">Logout</a>
+                    </template>
                 </div>
             </div>
         </div>
     </nav>
 </template>
+
+<script setup>
+import { useAccountStore } from '~~/stores/account';
+
+const accountStore = useAccountStore();
+</script>

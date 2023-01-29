@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     },
     modules: [
         '@pinia/nuxt',
+        '@pinia-plugin-persistedstate/nuxt',
     ],
     runtimeConfig: {
         JWT_SECRET: process.env.JWT_SECRET || 'secret',
