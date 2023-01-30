@@ -4,6 +4,12 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 ## Setup
 
+Setup env and then fill values
+
+```bash
+cp .env.example .env
+```
+
 Make sure to install the dependencies:
 
 ```bash
