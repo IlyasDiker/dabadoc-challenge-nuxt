@@ -13,13 +13,13 @@ export const useAccountStore = defineStore('account', {
             this.account = account;
         },
         setSession(session){
-            if(!session) return;
+            if(!session || !session.user || !session.authToken) return;
             this.setAccount(session.user)
             this.authToken = session.authToken;
         },
         getToken(){
             if(this.authToken){
-                return `Bearer ${thus.authToken}`
+                return `Bearer ${this.authToken}`
             }
             return null
         },
