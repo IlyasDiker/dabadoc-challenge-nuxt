@@ -49,6 +49,7 @@ export default {
         onSubmit(){
             loginrUser(this.FormData.username, this.FormData.email, this.FormData.password).then((data)=>{
                 console.log(data);
+                this.$router.push('/');
             })
         }
     },
@@ -64,6 +65,7 @@ export default {
     setup(){
         definePageMeta({
             layout: "auth",
+            middleware: ["auth"],
         });
     }
 }
