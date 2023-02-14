@@ -22,6 +22,7 @@
     "@prisma/client": "^4.9.0",
     "bcrypt": "^5.1.0",
     "jsonwebtoken": "^9.0.0",
+    "mapbox-gl": "^2.12.1",
     "pinia": "^2.0.29",
     "sass": "^1.57.1"
   },
