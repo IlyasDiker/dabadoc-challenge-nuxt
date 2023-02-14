@@ -1,6 +1,9 @@
-# Nuxt 3 Minimal Starter
+# DabaDoc Challenge Nuxt3
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Usefull Links:
+ - [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more about Nuxt3.
+ - [Pinia](https://pinia.vuejs.org/) to learn more about Pinia state manager.
+ - [Tailwind CSS](https://tailwindcss.com/docs/installation) to learn more about tailwindcss.
 
 ## Setup
 
