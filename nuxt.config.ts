@@ -13,5 +13,8 @@ export default defineNuxtConfig({
     ],
     runtimeConfig: {
         JWT_SECRET: process.env.JWT_SECRET || 'secret',
+        public:{
+            MAPBOX_KEY: process.env.MAPBOX_KEY,
+        }
     }
 })
