@@ -1,6 +1,6 @@
 <template>
     <div class="max-w-screen-md mx-auto py-6 px-4 flex flex-col">
-        <AskQuestion @onSubmited="loadQuestions()"/>
+        <AskQuestion @onSubmited="loadQuestions"/>
 
         <div class="flex flex-col mt-5 gap-3">
             <template v-for="(item, index) in questions" :key="index">

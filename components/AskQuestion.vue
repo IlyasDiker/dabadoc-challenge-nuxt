@@ -4,7 +4,7 @@
          @click="FormModal = true" @keypress.enter="FormModal = true"
          aria-label="Create new Question">
             <div class="input-wrapper pointer-events-none">
-                <input id="title" tabindex="-1" type="text" readonly name="title" placeholder="Title" v-model="FormData.title" required>
+                <input id="title" tabindex="-1" type="text" readonly name="title" placeholder="Title" required>
             </div>
             <div class="input-wrapper pointer-events-none">
                 <textarea id="content" tabindex="-1" readonly name="content" placeholder="Write a Question..." required></textarea>
@@ -45,7 +45,7 @@
             </div>
             <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <button type="submit" 
-                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">Deactivate</button>
+                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">Submit</button>
                 <button type="button" @click="cancelForm()"
                     class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Cancel</button>
             </div>
@@ -58,6 +58,7 @@ import createQuestion from '~~/composables/questions/createQuestion'
 import mapboxgl from 'mapbox-gl'
 
 export default {
+    emits:['onSubmited'],
     methods: {
         loadGps() {
             if (this.gpsState == 'disabled') return
@@ -70,18 +71,37 @@ export default {
         },
         onSubmit() {
             createQuestion(this.FormData.title, this.FormData.location, this.FormData.content).then((data) => {
-                console.log(data);
                 this.$emit('onSubmited');
+                this.FormModal = false;
             })
+        },
+        cancelForm(){
+            this.FormModal = false;
+    
         },
         /* @param coords [x,y] */
         setCurrentLocationMarker(coords){
             if(!coords || coords[0] == null || coords[1] == null) return;
             if(!this.currentLocationMarker){
-                this.currentLocationMarker = new mapboxgl.Marker().setLngLat(coords).addTo(this.mapInstance);
+                let markertOptions= {
+                    draggable: true
+                };
+                this.currentLocationMarker = new mapboxgl.Marker(markertOptions)
+                    .setLngLat(coords).addTo(this.mapInstance);
+                this.currentLocationMarker.on('dragend', this.onCurrentLocationMarkerDragEnd)
             } else {
                 this.currentLocationMarker.setLngLat(coords);
             }
+            this.mapInstance.flyTo({center:coords, zoom:14})
+        },
+        onCurrentLocationMarkerDragEnd(){
+            let latLng = this.currentLocationMarker.getLngLat();
+            this.FormData.location = `${latLng.lng}, ${latLng.lat}`;
+        },
+        onMapDblClick(e){
+            console.log(e);
+            if(!e.latLng) return;
+            this.setCurrentLocationMarker([e.latLng.lng, e.latLng.lat]);
         }
     },
     data() {
@@ -98,11 +118,17 @@ export default {
         }
     },
     mounted(){
-        mapboxgl.accessToken = 'key';
         this.mapInstance = new mapboxgl.Map({
             container: 'MapBoxContainer',
-            style: 'mapbox://styles/mapbox/streets-v11'
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-7.0849336, 31.794525],
+            zoom: 3,
         });
+        this.mapInstance.on('dblclick', this.onMapDblClick)
+    },
+    setup(){
+        const runtimeConfig = useRuntimeConfig();
+        mapboxgl.accessToken = runtimeConfig.public.MAPBOX_KEY;
     }
 }
 </script>
