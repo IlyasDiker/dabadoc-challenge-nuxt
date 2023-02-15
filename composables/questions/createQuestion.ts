@@ -1,8 +1,12 @@
 import { Question } from "@prisma/client";
 import { useAccountStore } from "~~/stores/account";
-import { ISession } from "~~/types/ISession"
 
 export default async function (title:String, content:String, coordinate:String) {
+    const accountStore = useAccountStore();
+    if(!accountStore.isAuthenticated()){
+        alert('Hmm, you should think about creating an account first!');
+        return;
+    }
     try{
         let res = await $fetch<Question>('/api/questions', {
             method: 'POST',
