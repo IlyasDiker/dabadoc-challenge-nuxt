@@ -25,6 +25,10 @@ npm install
 # pnpm
 pnpm install
 ```
+then
+```bash
+npx prisma generate
+```
 
 ## Development Server
 
