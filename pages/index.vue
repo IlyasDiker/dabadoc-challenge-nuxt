@@ -3,8 +3,18 @@
         <AskQuestion @onSubmited="loadQuestions"/>
 
         <div class="flex flex-col mt-5 gap-3">
-            <template v-for="(item, index) in questions" :key="index">
-               <QuestionCard :question="item"/>
+            <template v-if="questions.length > 0">
+                <template v-for="(item, index) in questions" :key="index">
+                   <QuestionCard :question="item"/>
+                </template>
+            </template>
+            <template v-else-if="isLoading">
+                
+            </template>
+            <template v-else>
+                <div class="p-4 border rounded-lg shadow-sm flex-col text-gray-500 text-center">
+                    <span>No Questions Found</span>
+                </div>
             </template>
         </div>
     </div>
@@ -21,7 +31,8 @@ export default{
     },
     data () {
         return {
-            questions: []
+            questions: [],
+            isLoading: false
         }
     },
     created(){

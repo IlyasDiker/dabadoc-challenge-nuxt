@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
 
         return questions;
     } catch (error) {
+        console.log(error);
         return error
     }
 })

@@ -14,10 +14,10 @@ export default defineEventHandler(async (event) => {
     try {
         let question: Question = await prisma.question.create({
             data:{
-                user_id: token.id,
                 title: title,
                 content: content,
                 coordinate: coordinate,
+                userId: token.id,
             }
         });
 

@@ -70,14 +70,22 @@ export default {
             }
         },
         onSubmit() {
-            createQuestion(this.FormData.title, this.FormData.location, this.FormData.content).then((data) => {
+            let locationArr = this.FormData.location.split(',').map(x => +x.trim());
+            let locationJson = locationArr.length >= 2 ? {lng: locationArr[0], lat: locationArr[1]} : null;
+            createQuestion(this.FormData.title, this.FormData.content, locationJson).then((data) => {
                 this.$emit('onSubmited');
                 this.FormModal = false;
+                this.clearForm()
             })
         },
         cancelForm(){
             this.FormModal = false;
-    
+            this.clearForm()
+        },
+        clearForm(){
+            this.FormData.content = '';
+            this.FormData.location = '';
+            this.FormData.title = '';
         },
         /* @param coords [x,y] */
         setCurrentLocationMarker(coords){

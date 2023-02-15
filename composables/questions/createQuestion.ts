@@ -1,7 +1,7 @@
 import { Question } from "@prisma/client";
 import { useAccountStore } from "~~/stores/account";
 
-export default async function (title:String, content:String, coordinate:String) {
+export default async function (title:String, content:String, coordinate:JSON|null) {
     const accountStore = useAccountStore();
     if(!accountStore.isAuthenticated()){
         alert('Hmm, you should think about creating an account first!');
