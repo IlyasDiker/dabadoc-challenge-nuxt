@@ -98,7 +98,7 @@ export default {
         }
     },
     mounted(){
-        mapboxgl.accessToken = 'pk.eyJ1IjoiaWx5YXNkaWtlciIsImEiOiJjamlqYTllMXYwaGhtM3ZtbHZsYjJ3YXJ2In0.50NeGZ-8qiorI553kGYHjQ';
+        mapboxgl.accessToken = 'key';
         this.mapInstance = new mapboxgl.Map({
             container: 'MapBoxContainer',
             style: 'mapbox://styles/mapbox/streets-v11'
