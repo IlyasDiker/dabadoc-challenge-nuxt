@@ -1,7 +1,7 @@
 <template>
     <section class="p-4 border rounded-lg shadow-md">
         <div tabindex="0" class="flex flex-col gap-x-4 gap-y-3 relative focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-4 rounded"
-         @click="FormModal = true" @keypress.enter="FormModal = true"
+         @click="openFormModal" @keypress.enter="openFormModal"
          aria-label="Create new Question">
             <div class="input-wrapper pointer-events-none">
                 <input id="title" tabindex="-1" type="text" readonly name="title" placeholder="Title" required>
@@ -11,6 +11,7 @@
             </div>
         </div>
     </section>
+    <RequestLoginModal :openState="requestLoginModal" @onClose="requestLoginModal=false"/>
     <ModalUi :openState="FormModal" @onClose="FormModal = false" containerClass="w-full md:max-w-screen-md">
         <form @submit.prevent="onSubmit">
             <div class="flex flex-col sm:flex-row bg-white">
@@ -56,10 +57,15 @@
 <script>
 import createQuestion from '~~/composables/questions/createQuestion'
 import mapboxgl from 'mapbox-gl'
+import { useAccountStore } from '~~/stores/account';
 
 export default {
     emits:['onSubmited'],
     methods: {
+        openFormModal(){
+            this.accountStore.isAuthenticated() ? 
+            this.FormModal = true : this.requestLoginModal = true;
+        },
         loadGps() {
             if (this.gpsState == 'disabled') return
             if (navigator.geolocation) {
@@ -122,7 +128,8 @@ export default {
                 content: ''
             },
             mapInstance: null,
-            currentLocationMarker: null, 
+            currentLocationMarker: null,
+            requestLoginModal: false,
         }
     },
     mounted(){
@@ -143,7 +150,9 @@ export default {
     },
     setup(){
         const runtimeConfig = useRuntimeConfig();
+        const accountStore = useAccountStore();
         mapboxgl.accessToken = runtimeConfig.public.MAPBOX_KEY;
+        return {accountStore};
     }
 }
 </script>

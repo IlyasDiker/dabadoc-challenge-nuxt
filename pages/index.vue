@@ -9,7 +9,9 @@
                 </template>
             </template>
             <template v-else-if="isLoading">
-                
+                <div class="text-center p-4">
+                    Loading ...
+                </div>
             </template>
             <template v-else>
                 <div class="p-4 border rounded-lg shadow-sm flex-col text-gray-500 text-center">
@@ -24,15 +26,18 @@
 export default{
     methods: {
         loadQuestions(){
+            this.isLoading = true
             $fetch('/api/questions').then(data => {
                 this.questions = data;
+            }, ()=>{}).finally(()=>{
+                this.isLoading = false;
             })
         }
     },
     data () {
         return {
             questions: [],
-            isLoading: false
+            isLoading: true
         }
     },
     created(){
