@@ -14,7 +14,7 @@
     <ModalUi :openState="FormModal" @onClose="FormModal = false" containerClass="w-full md:max-w-screen-md">
         <form @submit.prevent="onSubmit">
             <div class="flex flex-col sm:flex-row bg-white">
-                <div id="MapBoxContainer">
+                <div id="MapBoxContainer" class="max-md:min-h-[250px]">
                 </div>
                 <div class="flex-grow px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="flex items-start">
@@ -95,13 +95,13 @@ export default {
             this.mapInstance.flyTo({center:coords, zoom:14})
         },
         onCurrentLocationMarkerDragEnd(){
-            let latLng = this.currentLocationMarker.getLngLat();
-            this.FormData.location = `${latLng.lng}, ${latLng.lat}`;
+            let lngLat = this.currentLocationMarker.getLngLat();
+            this.FormData.location = `${lngLat.lng}, ${lngLat.lat}`;
         },
         onMapDblClick(e){
-            console.log(e);
-            if(!e.latLng) return;
-            this.setCurrentLocationMarker([e.latLng.lng, e.latLng.lat]);
+            if(!e.lngLat) return;
+            this.setCurrentLocationMarker([e.lngLat.lng, e.lngLat.lat]);
+            this.FormData.location = `${lngLat.lng}, ${lngLat.lat}`;
         }
     },
     data() {
@@ -125,6 +125,13 @@ export default {
             zoom: 3,
         });
         this.mapInstance.on('dblclick', this.onMapDblClick)
+        window.addEventListener('resize', this.handleMapResize)
+    },
+    handleMapResize(){
+        this.mapInstance.resize();
+    },
+    unmounted(){
+        window.removeEventListener('resize', this.handleMapResize)
     },
     setup(){
         const runtimeConfig = useRuntimeConfig();
@@ -140,8 +147,8 @@ export default {
 
 #MapBoxContainer{
     max-height: 500px;
-    width: 40%;
     position: relative;
+    @apply w-full sm:w-[40%];
 }
 </style>
 
