@@ -60,7 +60,7 @@ export default{
             coords: null,
         }
     },
-    created(){
+    mounted(){
         this.loadGps().finally(()=>{
             this.loadQuestions()
         });
