@@ -27,21 +27,43 @@ export default{
     methods: {
         loadQuestions(){
             this.isLoading = true
-            $fetch('/api/questions').then(data => {
+            let params = {}
+            if(this.coordinates){
+                params.lng = this.coordinates.lng;
+                params.lat = this.coordinates.lat;
+            }
+            $fetch('/api/questions', {
+                params
+            }).then(data => {
                 this.questions = data;
             }, ()=>{}).finally(()=>{
                 this.isLoading = false;
             })
-        }
+        },
+        loadGps() {
+            return new Promise((resolve, reject) => {
+                if (this.gpsState == 'disabled') return
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition((pos) => {
+                        this.coordinates = {lng: pos.coords.longitude, lat: pos.coords.latitude}
+                        resolve(this.coordinates);
+                    })
+                }
+            })
+        },
     },
     data () {
         return {
             questions: [],
-            isLoading: true
+            isLoading: true,
+            gpsState: 'notfixed',
+            coords: null,
         }
     },
     created(){
-        this.loadQuestions()
+        this.loadGps().finally(()=>{
+            this.loadQuestions()
+        });
     }
 }
 </script>
