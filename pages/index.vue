@@ -83,9 +83,12 @@ export default{
             this.FormData.message = '';
         },
         onSubmitComment() {
-            console.log(this.FormData.questionId);
             createComment(this.FormData.questionId, this.FormData.message).then((data)=>{
-                console.log(data);
+                let questionIndex = this.questions.findIndex(x => x.id == data.questionId);
+                if(questionIndex != -1 ){
+                    this.questions[questionIndex].comments.push(data)
+                }
+                this.cancelForm();
             })
         },
         commentOnPost(questionId) {

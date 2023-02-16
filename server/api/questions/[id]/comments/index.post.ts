@@ -16,6 +16,9 @@ export default defineEventHandler(async (event) => {
                 message: message,
                 userId: token.id,
                 questionId: questionId,
+            },
+            include:{
+                user: true
             }
         });
 

@@ -14,6 +14,7 @@ export default defineEventHandler(async (event) => {
     try {
         let questions: Question[] = await prisma.question.findMany({
             include:{
+                favoritedBy: true,
                 comments: {
                     include:{
                         user:true
