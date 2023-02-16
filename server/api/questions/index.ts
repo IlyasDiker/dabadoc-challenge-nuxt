@@ -13,6 +13,13 @@ export default defineEventHandler(async (event) => {
     }
     try {
         let questions: Question[] = await prisma.question.findMany({
+            include:{
+                comments: {
+                    include:{
+                        user:true
+                    }
+                }
+            },
             orderBy:{
                 createdAt: 'desc'
             }
